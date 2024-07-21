@@ -174,6 +174,7 @@ const Register = () => {
                         useOneTap
                     />
                     <TelegramLoginButton
+                        telegramAuthUrl="https://7oy-4-dars.vercel.app"
                         disabled={loading}
                         botName="Frontend_4_dars_bot"
                         dataOnauth={(user) => {
