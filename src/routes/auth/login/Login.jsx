@@ -185,6 +185,7 @@ const Login = () => {
                             disabled={loading}
                             botName="Frontend_4_dars_bot"
                             dataOnauth={async (user) => {
+                                console.log(user);
                                 try {
                                     if (user?.username) {
                                         const user2 = {
