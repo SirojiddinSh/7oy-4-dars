@@ -178,15 +178,16 @@ const Register = () => {
                         botName="Frontend_4_dars_bot"
                         dataOnauth={async (user) => {
                             console.log(user);
-                            const telUser = user.config.data;
+                            const telUser = user;
                             try {
-                                if (telUser?.id) {
+                                if (telUser?.username || telUser?.id) {
                                     const user2 = {
                                         username:
                                             telUser.username || telUser.id,
                                         password: telUser.id,
                                         first_name:
                                             telUser.first_name || "Unknown",
+                                        photo_url: telUser.photo_url || "",
                                     };
                                     const response = await axios.post(
                                         "/auth",
