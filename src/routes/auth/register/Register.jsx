@@ -144,15 +144,15 @@ const Register = () => {
                     <GoogleLogin
                         disabled={loading}
                         onSuccess={async (credentialResponse) => {
-                            const decode =
-                                credentialResponse.credential.split(".")[1];
-                            const userData = JSON.parse(atob(decode));
-                            const user = {
-                                username: userData.email,
-                                password: userData.sub,
-                                first_name: userData.name,
-                            };
                             try {
+                                const decode =
+                                    credentialResponse.credential.split(".")[1];
+                                const userData = JSON.parse(atob(decode));
+                                const user = {
+                                    username: userData.email,
+                                    password: userData.sub,
+                                    first_name: userData.name,
+                                };
                                 const response = await axios.post(
                                     "/auth",
                                     user
@@ -161,6 +161,9 @@ const Register = () => {
                                 navigate("/auth");
                             } catch (error) {
                                 console.error("Google login failed:", error);
+                                toast.error(
+                                    "Google login failed! Please try again."
+                                );
                             }
                         }}
                         onError={() => {
@@ -174,14 +177,13 @@ const Register = () => {
                         disabled={loading}
                         botName="Frontend_4_dars_bot"
                         dataOnauth={async (user) => {
-                            const decode = user.credential.split(".")[1];
-                            const userData2 = JSON.parse(atob(decode));
-                            const user2 = {
-                                username: userData2.email,
-                                password: userData2.sub,
-                                first_name: userData2.name,
-                            };
                             try {
+                                const userData2 = user;
+                                const user2 = {
+                                    username: userData2.email,
+                                    password: userData2.sub,
+                                    first_name: userData2.name,
+                                };
                                 const response = await axios.post(
                                     "/auth",
                                     user2
@@ -189,7 +191,10 @@ const Register = () => {
                                 console.log(response.data);
                                 navigate("/auth");
                             } catch (error) {
-                                console.error("Google login failed:", error);
+                                console.error("Telegram login failed:", error);
+                                toast.error(
+                                    "Telegram login failed! Please try again."
+                                );
                             }
                         }}
                     />
