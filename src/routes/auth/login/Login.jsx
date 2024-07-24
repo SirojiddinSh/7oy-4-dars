@@ -1,14 +1,15 @@
 import { Button, Form, Input, Divider } from "antd";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "../../../api";
 import TelegramLoginButton from "telegram-login-button";
 import { useDispatch, useSelector } from "react-redux";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-    const { loading } = useSelector((state) => state);
+    const navigate = useNavigate();
+    const loading = useSelector((state) => state.loading);
     const dispatch = useDispatch();
     const [form] = Form.useForm();
 
@@ -21,7 +22,10 @@ const Login = () => {
                 token: data.payload.token,
                 user: data.payload.user,
             });
-            toast.success("Login successful!");
+            if (data?.payload?.token) {
+                toast.success("Login successful!");
+                navigate("/dashboard");
+            }
         } catch (error) {
             dispatch({ type: "ERROR" });
             toast.error(
@@ -40,7 +44,6 @@ const Login = () => {
 
     return (
         <>
-            <ToastContainer />
             <Form
                 form={form}
                 layout="vertical"
@@ -63,6 +66,7 @@ const Login = () => {
             >
                 <h1
                     style={{
+                        color: "white",
                         textAlign: "center",
                         fontSize: "40px",
                         marginBottom: "10px",
@@ -125,7 +129,7 @@ const Login = () => {
                             fontSize: "17px",
                             marginBottom: "10px",
                             fontWeight: "600",
-                            color: "gray",
+                            color: "white",
                         }}
                     >
                         Or
@@ -177,7 +181,6 @@ const Login = () => {
                             useOneTap
                         />
                         <TelegramLoginButton
-                            telegramAuthUrl="https://7oy-4-dars.vercel.app"
                             disabled={loading}
                             botName="Frontend_4_dars_bot"
                             dataOnauth={(user) => {
@@ -186,7 +189,7 @@ const Login = () => {
                         />
                     </div>
                 </Form.Item>
-                <p>
+                <p style={{ color: "white" }}>
                     Don't have an account?{" "}
                     <NavLink to="/auth/register" style={{ color: "blue" }}>
                         Register

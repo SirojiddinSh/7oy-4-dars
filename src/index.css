@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: white;
 }
 
 body {
@@ -49,4 +48,9 @@ body {
 
 .Toastify__toast-container--top-right {
     color: red;
+}
+
+:where(.css-dev-only-do-not-override-1uq9j6g).ant-table-wrapper
+    .ant-table-pagination.ant-pagination {
+    display: none;
 }

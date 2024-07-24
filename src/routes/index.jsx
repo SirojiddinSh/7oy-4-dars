@@ -1,18 +1,21 @@
-import { useRoutes } from "react-router-dom";
+import { Navigate, useRoutes } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { lazy, Suspense } from "react";
 import { Loading } from "../utils";
-import Products from "./auth/dashboard/products/Products";
-import Users from "./auth/dashboard/users/Users";
 
 const Home = lazy(() => import("./home/Home"));
 const Auth = lazy(() => import("./auth/Auth"));
-// const Dashboard = lazy(() => import("./auth/dashboard/Dashboard"));
+const Dashboard = lazy(() => import("./auth/dashboard/Dashboard"));
 const Private = lazy(() => import("../private/Private"));
 
 const Login = lazy(() => import("./auth/login/Login"));
 const Register = lazy(() => import("./auth/register/Register"));
+const Products = lazy(() => import("./auth/dashboard/products/Products"));
+const Cart = lazy(() => import("./auth/dashboard/cart/Cart"));
+const Profile = lazy(() => import("./auth/dashboard/profile/Profile"));
 
 const RouteController = () => {
+    const token = useSelector((state) => state.token);
     const routes = useRoutes([
         {
             path: "/",
@@ -24,7 +27,9 @@ const RouteController = () => {
         },
         {
             path: "/auth",
-            element: (
+            element: token ? (
+                <Navigate to="/dashboard" />
+            ) : (
                 <Suspense fallback={<Loading />}>
                     <Auth />
                 </Suspense>
@@ -59,18 +64,36 @@ const RouteController = () => {
                 {
                     path: "",
                     element: (
-                        <Suspense>
-                            <Products />
+                        <Suspense fallback={<Loading />}>
+                            <Dashboard />
                         </Suspense>
                     ),
-                },
-                {
-                    path: "users",
-                    element: (
-                        <Suspense>
-                            <Users />
-                        </Suspense>
-                    ),
+                    children: [
+                        {
+                            path: "",
+                            element: (
+                                <Suspense>
+                                    <Products />
+                                </Suspense>
+                            ),
+                        },
+                        {
+                            path: "cart",
+                            element: (
+                                <Suspense>
+                                    <Cart />
+                                </Suspense>
+                            ),
+                        },
+                        {
+                            path: "profile",
+                            element: (
+                                <Suspense fallback={<Loading />}>
+                                    <Profile />
+                                </Suspense>
+                            ),
+                        },
+                    ],
                 },
             ],
         },

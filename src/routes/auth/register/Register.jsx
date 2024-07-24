@@ -1,15 +1,16 @@
+import React from "react";
 import { Button, Checkbox, Form, Input, Divider } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "../../../api";
 import TelegramLoginButton from "telegram-login-button";
 import { useDispatch, useSelector } from "react-redux";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
     const navigate = useNavigate();
-    const { loading } = useSelector((state) => state);
+    const loading = useSelector((state) => state.loading);
     const dispatch = useDispatch();
 
     const onFinish = async (values) => {
@@ -21,11 +22,14 @@ const Register = () => {
                 token: data.payload.token,
                 user: data.payload.user,
             });
-            navigate("/auth");
+            if (data?.payload?.token) {
+                toast.success("Registered successfully");
+                navigate("/dashboard");
+            }
         } catch (error) {
             dispatch({ type: "ERROR" });
             toast.error(
-                error.response.data.msg ||
+                error.response?.data?.msg ||
                     "Something went wrong. Please try again."
             );
         }
@@ -33,25 +37,17 @@ const Register = () => {
 
     const onFinishFailed = (errorInfo) => {
         console.log("Failed:", errorInfo);
-        toast.error("Login failed! Please try again.");
+        toast.error("Registration failed! Please try again.");
     };
 
     return (
         <Form
             layout="vertical"
             name="basic"
-            labelCol={{
-                span: 8,
-            }}
-            wrapperCol={{
-                span: 24,
-            }}
-            style={{
-                maxWidth: 600,
-            }}
-            initialValues={{
-                remember: true,
-            }}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 24 }}
+            style={{ maxWidth: 600 }}
+            initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
@@ -61,19 +57,18 @@ const Register = () => {
                     textAlign: "center",
                     fontSize: "40px",
                     marginBottom: "10px",
+                    color: "white",
                 }}
             >
                 Register
             </h1>
+
             <Form.Item
                 style={{ marginBottom: "5px", color: "white" }}
                 label="Firstname"
                 name="first_name"
                 rules={[
-                    {
-                        required: true,
-                        message: "Please input your firstname!",
-                    },
+                    { required: true, message: "Please input your firstname!" },
                 ]}
             >
                 <Input style={{ background: "transparent", color: "white" }} />
@@ -84,10 +79,7 @@ const Register = () => {
                 label="Username"
                 name="username"
                 rules={[
-                    {
-                        required: true,
-                        message: "Please input your username!",
-                    },
+                    { required: true, message: "Please input your username!" },
                 ]}
             >
                 <Input style={{ background: "transparent", color: "white" }} />
@@ -98,10 +90,7 @@ const Register = () => {
                 label="Password"
                 name="password"
                 rules={[
-                    {
-                        required: true,
-                        message: "Please input your password!",
-                    },
+                    { required: true, message: "Please input your password!" },
                 ]}
             >
                 <Input.Password
@@ -113,18 +102,14 @@ const Register = () => {
                 style={{ marginBottom: "10px" }}
                 name="remember"
                 valuePropName="checked"
-                wrapperCol={{
-                    span: 16,
-                }}
+                wrapperCol={{ span: 16 }}
             >
                 <Checkbox>Remember me</Checkbox>
             </Form.Item>
 
             <Form.Item
                 style={{ width: "100%", marginBottom: "10px" }}
-                wrapperCol={{
-                    span: 24,
-                }}
+                wrapperCol={{ span: 24 }}
             >
                 <Button
                     disabled={loading}
@@ -134,15 +119,18 @@ const Register = () => {
                 >
                     Register
                 </Button>
+
                 <Divider
                     style={{
                         fontSize: "17px",
                         marginBottom: "10px",
                         fontWeight: "600",
+                        color: "white",
                     }}
                 >
                     Or
                 </Divider>
+
                 <div
                     style={{
                         width: "100%",
@@ -164,15 +152,23 @@ const Register = () => {
                                 password: userData.sub,
                                 first_name: userData.name,
                             };
-                            const response = await axios.post("/auth", user);
-                            console.log(response.data);
-                            navigate("/auth");
+                            try {
+                                const response = await axios.post(
+                                    "/auth",
+                                    user
+                                );
+                                console.log(response.data);
+                                navigate("/auth");
+                            } catch (error) {
+                                console.error("Google login failed:", error);
+                            }
                         }}
                         onError={() => {
-                            console.log("Login Failed");
+                            console.log("Google login failed");
                         }}
                         useOneTap
                     />
+
                     <TelegramLoginButton
                         telegramAuthUrl="https://7oy-4-dars.vercel.app"
                         disabled={loading}
@@ -184,7 +180,8 @@ const Register = () => {
                     />
                 </div>
             </Form.Item>
-            <p>
+
+            <p style={{ color: "white" }}>
                 Already have an account?{" "}
                 <NavLink to="/auth" style={{ color: "blue" }}>
                     Login
