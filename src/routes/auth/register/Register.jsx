@@ -191,7 +191,7 @@ const Register = () => {
                                         "/auth",
                                         user2
                                     );
-                                    console.log(response.data.config.data);
+                                    console.log(response.data);
                                     navigate("/dashboard");
                                 } else {
                                     throw new Error(
@@ -199,7 +199,10 @@ const Register = () => {
                                     );
                                 }
                             } catch (error) {
-                                console.error("Telegram login failed:", error);
+                                console.error(
+                                    "Telegram login failed:",
+                                    error.config.data
+                                );
                                 toast.error(
                                     "Telegram login failed! Please try again."
                                 );
