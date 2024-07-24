@@ -185,14 +185,15 @@ const Login = () => {
                             disabled={loading}
                             botName="Frontend_4_dars_bot"
                             dataOnauth={async (user) => {
-                                console.log(user.config);
-                                const telUser = user.config;
+                                console.log(user);
                                 try {
-                                    if (telUser?.username) {
+                                    if (user.username || user.id) {
                                         const user2 = {
-                                            username: telUser.username,
-                                            password: telUser.id,
-                                            first_name: telUser.first_name,
+                                            username: user.username || user.id,
+                                            password: user.id,
+                                            first_name:
+                                                user.first_name || "Unknown",
+                                            photo_url: user.photo_url || "",
                                         };
                                         const response = await axios.post(
                                             "/auth",
@@ -208,7 +209,7 @@ const Login = () => {
                                 } catch (error) {
                                     console.error(
                                         "Telegram login failed:",
-                                        error
+                                        error.config.data
                                     );
                                     toast.error(
                                         "Telegram login failed! Please try again."
