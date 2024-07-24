@@ -178,16 +178,14 @@ const Register = () => {
                         botName="Frontend_4_dars_bot"
                         dataOnauth={async (user) => {
                             console.log(user.id);
-                            const telUser = user;
                             try {
-                                if (telUser?.username || telUser?.id) {
+                                if (user?.username || user?.id) {
                                     const user2 = {
-                                        username:
-                                            telUser.username || telUser.id,
-                                        password: telUser.id,
+                                        username: user.username || user.id,
+                                        password: user.id,
                                         first_name:
-                                            telUser.first_name || "Unknown",
-                                        photo_url: telUser.photo_url || "",
+                                            user.first_name || "Unknown",
+                                        photo_url: user.photo_url || "",
                                     };
                                     const response = await axios.post(
                                         "/auth",
