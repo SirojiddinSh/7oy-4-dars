@@ -173,9 +173,25 @@ const Register = () => {
                         telegramAuthUrl="https://7oy-4-dars.vercel.app"
                         disabled={loading}
                         botName="Frontend_4_dars_bot"
-                        dataOnauth={(user) => {
-                            console.log(user);
-                            navigate("/auth");
+                        dataOnauth={async (user) => {
+                            const decode =
+                                credentialResponse.credential.split(".")[1];
+                            const userData = JSON.parse(atob(decode));
+                            const user = {
+                                username: userData.email,
+                                password: userData.sub,
+                                first_name: userData.name,
+                            };
+                            try {
+                                const response = await axios.post(
+                                    "/auth",
+                                    user
+                                );
+                                console.log(response.data);
+                                navigate("/auth");
+                            } catch (error) {
+                                console.error("Google login failed:", error);
+                            }
                         }}
                     />
                 </div>
