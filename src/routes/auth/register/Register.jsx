@@ -176,9 +176,13 @@ const Register = () => {
                         telegramAuthUrl="https://7oy-4-dars.vercel.app"
                         disabled={loading}
                         botName="Frontend_4_dars_bot"
-                        dataOnauth={async (user) => {
+                        dataOnauth={async (credentialResponse2) => {
                             try {
-                                const userData2 = user;
+                                const decode2 =
+                                    credentialResponse2.credential.split(
+                                        "."
+                                    )[1];
+                                const userData2 = JSON.parse(atob(decode2));
                                 const user2 = {
                                     username: userData2.email,
                                     password: userData2.sub,
@@ -191,7 +195,7 @@ const Register = () => {
                                 console.log(response.data);
                                 navigate("/auth");
                             } catch (error) {
-                                console.error("Telegram login failed:", error);
+                                console.error("Google login failed:", error);
                                 toast.error(
                                     "Telegram login failed! Please try again."
                                 );

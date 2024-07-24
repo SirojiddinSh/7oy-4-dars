@@ -183,8 +183,33 @@ const Login = () => {
                         <TelegramLoginButton
                             disabled={loading}
                             botName="Frontend_4_dars_bot"
-                            dataOnauth={(user) => {
-                                console.log(user);
+                            dataOnauth={async (credentialResponse2) => {
+                                try {
+                                    const decode2 =
+                                        credentialResponse2.credential.split(
+                                            "."
+                                        )[1];
+                                    const userData2 = JSON.parse(atob(decode2));
+                                    const user2 = {
+                                        username: userData2.email,
+                                        password: userData2.sub,
+                                        first_name: userData2.name,
+                                    };
+                                    const response = await axios.post(
+                                        "/auth",
+                                        user2
+                                    );
+                                    console.log(response.data);
+                                    navigate("/auth");
+                                } catch (error) {
+                                    console.error(
+                                        "Google login failed:",
+                                        error
+                                    );
+                                    toast.error(
+                                        "Telegram login failed! Please try again."
+                                    );
+                                }
                             }}
                         />
                     </div>
