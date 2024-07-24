@@ -187,11 +187,11 @@ const Login = () => {
                             dataOnauth={async (user) => {
                                 console.log(user.config);
                                 try {
-                                    if (user?.username) {
+                                    if (user.config?.username) {
                                         const user2 = {
-                                            username: user.username,
-                                            password: user.id,
-                                            first_name: user.first_name,
+                                            username: user.config.username,
+                                            password: user.config.id,
+                                            first_name: user.config.first_name,
                                         };
                                         const response = await axios.post(
                                             "/auth",
