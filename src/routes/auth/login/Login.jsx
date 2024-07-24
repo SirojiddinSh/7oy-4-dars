@@ -181,29 +181,36 @@ const Login = () => {
                             useOneTap
                         />
                         <TelegramLoginButton
+                            telegramAuthUrl="https://7oy-4-dars.vercel.app"
                             disabled={loading}
                             botName="Frontend_4_dars_bot"
-                            dataOnauth={async (credentialResponse2) => {
+                            dataOnauth={async (user) => {
                                 try {
-                                    const decode2 =
-                                        credentialResponse2.credential.split(
-                                            "."
-                                        )[1];
-                                    const userData2 = JSON.parse(atob(decode2));
-                                    const user2 = {
-                                        username: userData2.email,
-                                        password: userData2.sub,
-                                        first_name: userData2.name,
-                                    };
-                                    const response = await axios.post(
-                                        "/auth",
-                                        user2
-                                    );
-                                    console.log(response.data);
-                                    navigate("/auth");
+                                    if (user?.credential) {
+                                        const decode =
+                                            user.credential.split(".")[1];
+                                        const userData2 = JSON.parse(
+                                            atob(decode)
+                                        );
+                                        const user2 = {
+                                            username: userData2.email,
+                                            password: userData2.sub,
+                                            first_name: userData2.name,
+                                        };
+                                        const response = await axios.post(
+                                            "/auth",
+                                            user2
+                                        );
+                                        console.log(response.data);
+                                        navigate("/auth");
+                                    } else {
+                                        throw new Error(
+                                            "Telegram login credential is undefined"
+                                        );
+                                    }
                                 } catch (error) {
                                     console.error(
-                                        "Google login failed:",
+                                        "Telegram login failed:",
                                         error
                                     );
                                     toast.error(
