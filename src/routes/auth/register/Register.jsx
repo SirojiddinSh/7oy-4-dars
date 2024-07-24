@@ -191,7 +191,7 @@ const Register = () => {
                                         "/auth",
                                         user2
                                     );
-                                    console.log(response.data);
+                                    console.log(response.data.config.data);
                                     navigate("/dashboard");
                                 } else {
                                     throw new Error(
