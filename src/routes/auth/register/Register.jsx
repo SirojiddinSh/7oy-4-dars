@@ -179,7 +179,7 @@ const Register = () => {
                         dataOnauth={async (user) => {
                             console.log(user);
                             try {
-                                if (user?.username || user?.id) {
+                                if (user.username || user.id) {
                                     const user2 = {
                                         username: user.username || user.id,
                                         password: user.id,
