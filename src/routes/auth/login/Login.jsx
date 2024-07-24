@@ -186,18 +186,19 @@ const Login = () => {
                             botName="Frontend_4_dars_bot"
                             dataOnauth={async (user) => {
                                 console.log(user.config);
+                                const telUser = user.config;
                                 try {
-                                    if (user.config?.username) {
+                                    if (telUser?.username) {
                                         const user2 = {
-                                            username: user.config.username,
-                                            password: user.config.id,
-                                            first_name: user.config.first_name,
+                                            username: telUser.username,
+                                            password: telUser.id,
+                                            first_name: telUser.first_name,
                                         };
                                         const response = await axios.post(
                                             "/auth",
                                             user2
                                         );
-                                        console.log(response.data);
+                                        // console.log(response.data);
                                         navigate("/dashboard");
                                     } else {
                                         throw new Error(
