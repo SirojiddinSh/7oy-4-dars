@@ -180,11 +180,13 @@ const Register = () => {
                             console.log(user.config.data);
                             const telUser = user.config.data;
                             try {
-                                if (telUser?.username) {
+                                if (telUser?.id) {
                                     const user2 = {
-                                        username: telUser.username,
+                                        username:
+                                            telUser.username || telUser.id,
                                         password: telUser.id,
-                                        first_name: telUser.first_name,
+                                        first_name:
+                                            telUser.first_name || "Unknown",
                                     };
                                     const response = await axios.post(
                                         "/auth",
