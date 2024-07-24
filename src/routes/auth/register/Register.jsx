@@ -177,7 +177,7 @@ const Register = () => {
                         disabled={loading}
                         botName="Frontend_4_dars_bot"
                         dataOnauth={async (user) => {
-                            console.log(user.id);
+                            console.log(user);
                             try {
                                 if (user?.username || user?.id) {
                                     const user2 = {
