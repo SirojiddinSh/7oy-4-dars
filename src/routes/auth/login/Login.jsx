@@ -186,23 +186,18 @@ const Login = () => {
                             botName="Frontend_4_dars_bot"
                             dataOnauth={async (user) => {
                                 try {
-                                    if (user?.credential) {
-                                        const decode =
-                                            user.credential.split(".")[1];
-                                        const userData2 = JSON.parse(
-                                            atob(decode)
-                                        );
+                                    if (user?.username) {
                                         const user2 = {
-                                            username: userData2.email,
-                                            password: userData2.sub,
-                                            first_name: userData2.name,
+                                            username: user.username,
+                                            password: user.id,
+                                            first_name: user.first_name,
                                         };
                                         const response = await axios.post(
                                             "/auth",
                                             user2
                                         );
                                         console.log(response.data);
-                                        navigate("/auth");
+                                        navigate("/dashboard");
                                     } else {
                                         throw new Error(
                                             "Telegram login credential is undefined"
