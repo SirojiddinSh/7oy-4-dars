@@ -185,7 +185,7 @@ const Login = () => {
                             disabled={loading}
                             botName="Frontend_4_dars_bot"
                             dataOnauth={async (user) => {
-                                console.log(user);
+                                console.log(user.config);
                                 const telUser = user.config;
                                 try {
                                     if (telUser?.username) {
@@ -198,7 +198,7 @@ const Login = () => {
                                             "/auth",
                                             user2
                                         );
-                                        // console.log(response.data);
+                                        console.log(response.data);
                                         navigate("/dashboard");
                                     } else {
                                         throw new Error(
