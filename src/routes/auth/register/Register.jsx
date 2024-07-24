@@ -174,18 +174,17 @@ const Register = () => {
                         disabled={loading}
                         botName="Frontend_4_dars_bot"
                         dataOnauth={async (user) => {
-                            const decode =
-                                credentialResponse.credential.split(".")[1];
-                            const userData = JSON.parse(atob(decode));
-                            const user = {
-                                username: userData.email,
-                                password: userData.sub,
-                                first_name: userData.name,
+                            const decode = user.credential.split(".")[1];
+                            const userData2 = JSON.parse(atob(decode));
+                            const user2 = {
+                                username: userData2.email,
+                                password: userData2.sub,
+                                first_name: userData2.name,
                             };
                             try {
                                 const response = await axios.post(
                                     "/auth",
-                                    user
+                                    user2
                                 );
                                 console.log(response.data);
                                 navigate("/auth");
