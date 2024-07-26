@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 const Cart = () => {
     const dispatch = useDispatch();
     const cartProducts = useSelector((state) => state.cartProducts);
-    const length = cartProducts ? cartProducts.length : 0;
+    const length = cartProducts ? cartProducts?.length : 0;
 
     const columns = [
         {
